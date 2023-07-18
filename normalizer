@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Takes in the sample.csv as stdin
+csv_input=$(cat)
+
+# Make sure there is CSV input 
+if [ -z "$csv_input" ]; then
+  echo "Error: No CSV input received"
+  exit 1
+fi
+
+# Takes CSV from stdin and assigns the argument that's being used in the python3 call
+# python3 normalizer.py performs data normalization/processing on the CSV input
+# Returns a .csv file using the input csv is an argument
+normalized_csv=$(echo "$csv_input" | python3 normalizer.py)
+
+# If I had time I'd add a warning output to the user that if there is a duplicate file and that it's going to be overwritten
+
+# Check if the normalization or processing was successful
+if [ $? -ne 0 ]; then
+  echo "Error: Failed to normalize or process CSV"
+  exit 1
+fi
+
+# Output the normalized CSV to stdout
+echo "$normalized_csv"
